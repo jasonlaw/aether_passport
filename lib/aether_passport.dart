@@ -10,9 +10,11 @@ import 'src/oauth.dart'
 abstract class Passport {
   Passport._();
 
-  static Future<TokenResponse?> authentication(
-      Uri uri, String clientId, List<String> scopes) async {
-    return oauth.authentication(uri, clientId, scopes);
+  static Future<TokenResponse?> authenticate(
+      {required Uri uri,
+      required String clientId,
+      List<String>? scopes}) async {
+    return oauth.authentication(uri, clientId, scopes ?? const []);
   }
 
   static Future<TokenResponse?> processOAuth() async {
