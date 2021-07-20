@@ -1,14 +1,27 @@
 # aether_passport
 
-A new Flutter package project.
+Aether Passport package project.
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+**Example**
+~~~dart
+      var o = await Passport.authenticate(
+          uri: Uri.parse('http://localhost:8080/auth/realms/aether-passport'),
+          clientId: 'aether-billing',
+          scopes: ['email', 'profile']);
+~~~
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+
+**For Web**:
+1. Copy callback.html and place inside web root folder.
+2. **Passport.processOAuth** for OAuth redirection processing, place before runApp.
+~~~dart
+  var tokenResponse = await Passport.processOAuth();
+  if (tokenResponse != null) {
+    await LoginRepository.signInAndSync(idToken: tokenResponse.idTokenString);
+  }
+~~~
+
+
+

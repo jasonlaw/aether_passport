@@ -1,7 +1,7 @@
 name: aether_passport
-description: A new Flutter package project.
+description: Aether Passport
 version: 0.0.1
-homepage:
+homepage: https://github.com/jasonlaw/aether_passport.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,6 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  # https://pub.dev/packages/openid_client
+  openid_client: ^0.4.1
+
+  # https://pub.dev/packages/url_launcher 
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   flutter_test:
