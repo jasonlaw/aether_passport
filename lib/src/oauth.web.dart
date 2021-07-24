@@ -1,8 +1,8 @@
-import 'dart:async';
-
-import 'package:openid_client/openid_client_browser.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+import 'dart:convert';
+import 'dart:async';
+import 'package:openid_client/openid_client_browser.dart';
 
 Future<TokenResponse> authentication(
     Uri uri, String clientId, List<String> scopes) async {
@@ -40,24 +40,11 @@ Future<TokenResponse> authentication(
   }
 }
 
-Future<TokenResponse?> processOAuth() async {
-  final authUrl = html.window.sessionStorage["aether_passport:url"];
-  if (authUrl == null || authUrl.isEmpty || !authUrl.contains('callback.html'))
-    return null;
-  html.window.sessionStorage.remove("aether_passport:url");
-
-  //final state = html.window.sessionStorage["openid_client:state"];
-  //if (state == null || state.isEmpty) return null;
-
-  var uri = Uri(query: Uri.parse(authUrl).fragment);
-  var queryParameters = uri.queryParameters;
-
-  return TokenResponse.fromJson(queryParameters);
-}
-
 extension AetherAuthenticatorExtensions on Authenticator {
-  Future<TokenResponse> authorizeWithPopup(
-      {int popupHeight = 640, int popupWidth = 480}) async {
+  Future<TokenResponse> authorizeWithPopup({
+    int popupHeight = 640,
+    int popupWidth = 480,
+  }) async {
     _forgetCredentials();
     html.window.localStorage['openid_client:state'] = flow.state;
 
@@ -80,8 +67,11 @@ extension AetherAuthenticatorExtensions on Authenticator {
       final url = event.data.toString();
       final uri = Uri(query: Uri.parse(url).fragment);
       final queryParameters = uri.queryParameters;
-
       final response = TokenResponse.fromJson(queryParameters);
+
+      html.window.localStorage['openid_client:auth'] =
+          json.encode(queryParameters);
+
       c.complete(response);
       child.close();
     });
