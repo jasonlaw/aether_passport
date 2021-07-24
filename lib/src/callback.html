@@ -4,13 +4,9 @@
 <head>
     <script>
         window.onload = function () {
-            var parent = window.opener ?? window.parent;
-
-            if (window.top == window.self) {
-                //this is a redirect
-                sessionStorage.setItem("aether_passport:url", window.location);
-                location.assign("/");
-            } else {
+            if (window.opener && window.opener !== window) {
+                debugger;
+                var parent = window.opener ?? window.parent;
                 parent.postMessage(location.href, "*");
             }
         }
@@ -18,7 +14,6 @@
 </head>
 
 <body>
-
 </body>
 
 </html>

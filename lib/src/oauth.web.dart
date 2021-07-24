@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:openid_client/openid_client_browser.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
-Future<TokenResponse?> authentication(
+Future<TokenResponse> authentication(
     Uri uri, String clientId, List<String> scopes) async {
   // create the client
   var issuer = await Issuer.discover(uri);
@@ -29,8 +31,9 @@ Future<TokenResponse?> authentication(
 
   if (c == null) {
     // starts the authentication
-    html.window.sessionStorage.remove("aether_passport:url");
-    authenticator.authorize(); // this will redirect the browser
+    //html.window.sessionStorage.remove("aether_passport:url");
+    return await authenticator
+        .authorizeWithPopup(); // this will redirect the browser
   } else {
     // return the user info
     return await c.getTokenResponse();
@@ -50,4 +53,44 @@ Future<TokenResponse?> processOAuth() async {
   var queryParameters = uri.queryParameters;
 
   return TokenResponse.fromJson(queryParameters);
+}
+
+extension AetherAuthenticatorExtensions on Authenticator {
+  Future<TokenResponse> authorizeWithPopup(
+      {int popupHeight = 640, int popupWidth = 480}) async {
+    _forgetCredentials();
+    html.window.localStorage['openid_client:state'] = flow.state;
+
+    final top = (html.window.outerHeight - popupHeight) / 2 +
+        (html.window.screen?.available.top ?? 0);
+    final left = (html.window.outerWidth - popupWidth) / 2 +
+        (html.window.screen?.available.left ?? 0);
+
+    var options =
+        'width=$popupWidth,height=$popupHeight,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no&top=$top,left=$left';
+
+    final child = html.window.open(
+      flow.authenticationUri.toString(),
+      "aether_passport",
+      options,
+    );
+
+    final c = new Completer<TokenResponse>();
+    html.window.onMessage.first.then((event) {
+      final url = event.data.toString();
+      final uri = Uri(query: Uri.parse(url).fragment);
+      final queryParameters = uri.queryParameters;
+
+      final response = TokenResponse.fromJson(queryParameters);
+      c.complete(response);
+      child.close();
+    });
+
+    return await c.future;
+  }
+
+  void _forgetCredentials() {
+    html.window.localStorage.remove('openid_client:state');
+    html.window.localStorage.remove('openid_client:auth');
+  }
 }

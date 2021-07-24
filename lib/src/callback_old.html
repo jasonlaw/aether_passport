@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+        window.onload = function () {
+            var parent = window.opener ?? window.parent;
+
+            if (window.top == window.self) {
+                //this is a redirect
+                sessionStorage.setItem("aether_passport:url", window.location);
+                location.assign("/");
+            } else {
+                parent.postMessage(location.href, "*");
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
