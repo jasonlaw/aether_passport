@@ -32,5 +32,3 @@ Future<TokenResponse> authentication(
   // return the user info
   return await c.getTokenResponse();
 }
-
-Future<TokenResponse?> processOAuth() async {}
