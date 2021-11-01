@@ -6,10 +6,12 @@ Aether Passport package project.
 
 **Example**
 ~~~dart
-      var o = await Passport.authenticate(
+      var tokenResponse = await Passport.authenticate(
           uri: Uri.parse('http://localhost:8080/auth/realms/aether-passport'),
           clientId: 'aether-billing',
           scopes: ['email', 'profile']);
+
+      print(tokenResponse.idTokenString);
 ~~~
 
 
