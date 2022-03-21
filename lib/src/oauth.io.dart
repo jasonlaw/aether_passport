@@ -34,11 +34,11 @@ Future<TokenResponse> authentication(
   return await c.getTokenResponse();
 }
 
-void logout(
+Future logout(
   Uri uri,
   String? idTokenString,
   _,
-) {
-  http.get(Uri.parse(uri.toString() +
+) async {
+  await http.get(Uri.parse(uri.toString() +
       '/protocol/openid-connect/logout?id_token_hint=$idTokenString'));
 }

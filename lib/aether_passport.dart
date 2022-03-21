@@ -15,16 +15,16 @@ abstract class Passport {
     return oauth.authentication(uri, clientId, scopes ?? const []);
   }
 
-  static void logout({
+  static Future logout({
     required Uri uri, //Same uri from authenticate method
     String? idTokenString, //Used only in mobile logout
     String? redirectString, //Used only in web logout
-  }) {
+  }) async {
     if (idTokenString == null && redirectString == null) {
       throw new UnimplementedError(
           'Define idTokenString for mobile logout or redirectString for web logout.');
     }
-    oauth.logout(uri, idTokenString, redirectString);
+    await oauth.logout(uri, idTokenString, redirectString);
   }
 }
 

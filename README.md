@@ -21,7 +21,7 @@ Aether Passport package project.
         port: Uri.base.port,
       );
 
-      Passport.logout(
+      await Passport.logout(
         uri: Uri.parse('http://localhost:8080/auth/realms/aether-passport'),
         idTokenString: tokenRepoponse, //mobile only
         redirectString: base.toString(), //web only

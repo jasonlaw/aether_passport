@@ -61,7 +61,8 @@ Future logout(
     host: Uri.base.host,
     port: Uri.base.port,
   );
-  _launchURL(base.toString() + '/logout.html?redirect_uri=$encodedRedirectUri');
+  await _launchURL(
+      base.toString() + '/logout.html?redirect_uri=$encodedRedirectUri');
 }
 
 extension AetherAuthenticatorExtensions on Authenticator {
