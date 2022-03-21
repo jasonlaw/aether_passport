@@ -23,7 +23,7 @@ Aether Passport package project.
 
       Passport.logout(
         uri: Uri.parse('http://localhost:8080/auth/realms/aether-passport'),
-        idTokenString: tokenRepoponse,
+        idTokenString: tokenRepoponse, //mobile only
         redirectString: base.toString(), //web only
       );
 ~~~
