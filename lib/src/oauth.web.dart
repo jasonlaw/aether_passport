@@ -50,11 +50,11 @@ Future<TokenResponse> authentication(
 
 Future logout(
   Uri uri,
-  String? token,
-  String? redirectUri,
+  _,
+  String? redirectString,
 ) async {
   String redirect = uri.toString() +
-      '/protocol/openid-connect/logout?redirect_uri=$redirectUri';
+      '/protocol/openid-connect/logout?redirect_uri=$redirectString';
   String encodedRedirectUri = Uri.encodeComponent(redirect);
   Uri base = Uri(
     scheme: Uri.base.scheme,

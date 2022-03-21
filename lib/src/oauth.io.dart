@@ -36,9 +36,9 @@ Future<TokenResponse> authentication(
 
 void logout(
   Uri uri,
-  String? token,
-  String? redirectUri,
+  String? idTokenString,
+  _,
 ) {
-  http.get(Uri.parse(
-      uri.toString() + '/protocol/openid-connect/logout?id_token_hint=$token'));
+  http.get(Uri.parse(uri.toString() +
+      '/protocol/openid-connect/logout?id_token_hint=$idTokenString'));
 }

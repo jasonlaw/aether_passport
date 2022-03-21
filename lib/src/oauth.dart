@@ -7,8 +7,8 @@ Future<TokenResponse> authentication(
 
 Future logout(
   Uri uri, //Same uri from authentication method
-  String? token, //Used in mobile logout
-  String? redirectUri, //Used in web logout
+  String? idTokenString, //Used in mobile logout
+  String? redirectString, //Used in web logout
 ) {
   throw new UnimplementedError();
 }
