@@ -3,6 +3,14 @@ import 'dart:html' as html;
 import 'dart:convert';
 import 'dart:async';
 import 'package:openid_client/openid_client_browser.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+Future _launchURL(String url) async {
+  if (!await launch(
+    url,
+    webOnlyWindowName: '_self',
+  )) throw 'Could not launch $url';
+}
 
 Future<TokenResponse> authentication(
     Uri uri, String clientId, List<String> scopes) async {
@@ -38,6 +46,22 @@ Future<TokenResponse> authentication(
     // return the user info
     return await c.getTokenResponse();
   }
+}
+
+Future logout(
+  Uri uri,
+  String? token,
+  String? redirectUri,
+) async {
+  String redirect = uri.toString() +
+      '/protocol/openid-connect/logout?redirect_uri=$redirectUri';
+  String encodedRedirectUri = Uri.encodeComponent(redirect);
+  Uri base = Uri(
+    scheme: Uri.base.scheme,
+    host: Uri.base.host,
+    port: Uri.base.port,
+  );
+  _launchURL(base.toString() + '/logout.html?redirect_uri=$encodedRedirectUri');
 }
 
 extension AetherAuthenticatorExtensions on Authenticator {

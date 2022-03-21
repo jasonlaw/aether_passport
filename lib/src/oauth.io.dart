@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 //import the io version
 import 'package:openid_client/openid_client_io.dart';
 // use url launcher package
@@ -31,4 +32,13 @@ Future<TokenResponse> authentication(
 
   // return the user info
   return await c.getTokenResponse();
+}
+
+void logout(
+  Uri uri,
+  String? token,
+  String? redirectUri,
+) {
+  http.get(Uri.parse(
+      uri.toString() + '/protocol/openid-connect/logout?id_token_hint=$token'));
 }

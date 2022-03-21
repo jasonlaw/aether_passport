@@ -12,11 +12,26 @@ Aether Passport package project.
           scopes: ['email', 'profile']);
 
       print(tokenResponse.idTokenString);
+
+      //Logout:
+
+      Uri base = Uri(
+        scheme: Uri.base.scheme,
+        host: Uri.base.host,
+        port: Uri.base.port,
+      );
+
+      Passport.logout(
+        uri: Uri.parse('http://localhost:8080/auth/realms/aether-passport'),
+        idToken: tokenRepsponse,
+        redirectUri: base.toString(), //web only
+      );
 ~~~
 
 
 **For Web**:
 1. Copy callback.html and place inside web root folder.
+2. Copy logout.html and place inside web root folder.
 
 
 
